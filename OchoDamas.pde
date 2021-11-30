@@ -59,18 +59,18 @@ void  draw()
         Movs M = Pila.pop();
         r = M.i;
         c = M.j;
-        QuitarDama(c); //<>//
+        QuitarDamas(c); //<>//
         if ( SePuede(r, c) ) 
-            T[r][c++] = 'D';
+            PonerDama(r,c++);
     
         if ( c == N ) {
             Soluciones++;
-            Espera = 500;
             DibujarTablero();
+            Espera = 500;
             print("Frame:", frameCount);
             println(",  Solución",Soluciones);
             MostrarTablero();
-            T[r][--c] = '-';
+            QuitarDama(r, --c);
             noLoop();
         } else {
             for ( int i=0 ; i<N ; i++ )
@@ -81,18 +81,28 @@ void  draw()
         }
     }
 
-    Espera -= 20;
-    if ( Espera<20 )
-        Espera = 20;
-    //delay(Espera);
+    Espera -= 10;
+    if ( Espera<50 )
+        Espera = 50;
+    delay(Espera);
 }
 
-void QuitarDama(int c)
+void PonerDama(int r, int c)
+{
+    T[r][c] = 'D';
+}
+
+void QuitarDama(int r, int c)
+{
+    T[r][c] = '-';
+}
+
+void QuitarDamas(int c)
 {
     for ( int j=7 ; c <= j ; j-- )
         for ( int i=0 ; i<N ; i++ )
             if ( T[i][j] == 'D' ) {
-                T[i][j] = '-';
+                QuitarDama(i, j);
                 break;
             }
 } //<>//
